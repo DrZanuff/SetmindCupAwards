@@ -3,6 +3,9 @@ extends Node
 export (bool)var debug = false
 var window_x = 1280
 
+var scrolling = false
+var scroll_target = 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if debug:
@@ -12,6 +15,18 @@ func _ready():
 func _physics_process(delta):
 	if debug:
 		debug_move(delta)
+	
+	if scrolling:
+		scroll_x(delta)
+
+func scroll_x(delta):
+	$Holder.rect_global_position.x = lerp($Holder.rect_global_position.x ,
+	scroll_target , 0.05)
+	
+	#Snaps position
+	if abs(scroll_target) - abs($Holder.rect_global_position.x) < 1:
+		$Holder.rect_global_position.x = scroll_target
+		$TimerScrollX.paused = false
 
 func debug_move(delta):
 	if debug:
@@ -33,3 +48,9 @@ func debug_populate(x):
 			var new_obj = obj.instance()
 			$Holder.add_child(new_obj)
 			new_obj.text = str("Object ", $Holder.get_child_count() )
+
+func _on_TimerScrollX_timeout():
+	scroll_target = $Holder.rect_global_position.x - window_x
+	scrolling = true
+	$TimerScrollX.paused = true
+	pass # Replace with function body.
