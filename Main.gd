@@ -5,9 +5,11 @@ var window_x = 1280
 
 var scrolling = false
 var scroll_target = 0
+onready var wait = $TimerScrollX.wait_time
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$DebugCam.current = debug
 	if debug:
 		debug_populate(21)
 	pass # Replace with function body.
@@ -18,27 +20,44 @@ func _physics_process(delta):
 	
 	if scrolling:
 		scroll_x(delta)
+	
+	if Input.is_action_just_pressed("ui_select") and !scrolling:
+		start_scroll()
 
 func scroll_x(delta):
 	$Holder.rect_global_position.x = lerp($Holder.rect_global_position.x ,
 	scroll_target , 0.05)
 	
 	#Snaps position
-	if abs(scroll_target) - abs($Holder.rect_global_position.x) < 1:
+	if (abs(scroll_target) - abs($Holder.rect_global_position.x) < 1) or \
+	(Input.is_action_just_pressed("ui_select")):
 		$Holder.rect_global_position.x = scroll_target
+		reoder()
 		$TimerScrollX.paused = false
+		scrolling = false
+		
+		
+func reoder():
+	for i in range(4):
+		var obj = $Holder.get_child(0)
+		$Holder.remove_child( $Holder.get_child(0) )
+		$Holder.add_child(obj)
+	$Holder.rect_global_position.x = 0
+	pass
 
 func debug_move(delta):
 	if debug:
 		var debug_speed = 800
 		if Input.is_action_pressed("debug_right"):
-			$Holder.rect_global_position.x = clamp(
-			$Holder.rect_global_position.x - debug_speed * delta, 
-			-($Holder.rect_size.x-window_x) , 0)
+			$DebugCam.global_position.x += delta * debug_speed
+#			$Holder.rect_global_position.x = clamp(
+#			$Holder.rect_global_position.x - debug_speed * delta, 
+#			-($Holder.rect_size.x-window_x) , 0)
 		if Input.is_action_pressed("debug_left"):
-			$Holder.rect_global_position.x = clamp(
-			$Holder.rect_global_position.x + debug_speed * delta, 
-			-($Holder.rect_size.x-window_x) , 0)
+			$DebugCam.global_position.x -= delta * debug_speed
+#			$Holder.rect_global_position.x = clamp(
+#			$Holder.rect_global_position.x + debug_speed * delta, 
+#			-($Holder.rect_size.x-window_x) , 0)
 
 func debug_populate(x):
 	if debug:
@@ -50,7 +69,10 @@ func debug_populate(x):
 			new_obj.text = str("Object ", $Holder.get_child_count() )
 
 func _on_TimerScrollX_timeout():
+	start_scroll()
+
+func start_scroll():
+	$TimerScrollX.wait_time = wait
 	scroll_target = $Holder.rect_global_position.x - window_x
 	scrolling = true
 	$TimerScrollX.paused = true
-	pass # Replace with function body.

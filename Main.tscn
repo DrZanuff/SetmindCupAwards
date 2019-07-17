@@ -12,5 +12,12 @@ margin_bottom = 720.0
 custom_constants/separation = 0
 
 [node name="TimerScrollX" type="Timer" parent="."]
+wait_time = 10.0
 autostart = true
+
+[node name="DebugCam" type="Camera2D" parent="."]
+anchor_mode = 0
+current = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
 [connection signal="timeout" from="TimerScrollX" to="." method="_on_TimerScrollX_timeout"]
