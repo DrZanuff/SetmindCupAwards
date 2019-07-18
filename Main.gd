@@ -6,7 +6,7 @@ var window_x = 1280
 var scrolling = false
 var scroll_target = 0
 onready var wait = $TimerScrollX.wait_time
-onready var holder = $Holder
+onready var holder = $Holder as HBoxContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -26,13 +26,13 @@ func _physics_process(delta):
 		start_scroll()
 
 func scroll_x(delta):
-	$Holder.rect_global_position.x = lerp($Holder.rect_global_position.x ,
+	holder.rect_global_position.x = lerp(holder.rect_global_position.x ,
 	scroll_target , 0.05)
 	
 	#Snaps position
-	if (abs(scroll_target) - abs($Holder.rect_global_position.x) < 1) or \
+	if (abs(scroll_target) - abs(holder.rect_global_position.x) < 1) or \
 	(Input.is_action_just_pressed("ui_select")):
-		$Holder.rect_global_position.x = scroll_target
+		holder.rect_global_position.x = scroll_target
 		reoder()
 		$TimerScrollX.paused = false
 		scrolling = false
@@ -40,10 +40,10 @@ func scroll_x(delta):
 		
 func reoder():
 	for i in range(4):
-		var obj = $Holder.get_child(0)
-		$Holder.remove_child( $Holder.get_child(0) )
-		$Holder.add_child(obj)
-	$Holder.rect_global_position.x = 0
+		var obj = holder.get_child(0)
+		holder.remove_child( holder.get_child(0) )
+		holder.add_child(obj)
+	holder.rect_global_position.x = 0
 	pass
 
 func debug_move(delta):
@@ -63,17 +63,20 @@ func debug_move(delta):
 func debug_populate(x):
 	if debug:
 		#Populate with garbage template
-		var obj = load("res://Debug/BoxExample.tscn")
+#		var obj = load("res://Debug/BoxExample.tscn")
+		var obj = load("res://Board/Board.tscn")
 		for i in range(x):
 			var new_obj = obj.instance()
-			$Holder.add_child(new_obj)
-			new_obj.text = str("Object ", $Holder.get_child_count() )
+			holder.add_child(new_obj)
+#			new_obj.text = str("Object ", holder.get_child_count() )
+			new_obj.get_node("Body/Title").text = str("Object ", holder.get_child_count() )
+
 
 func _on_TimerScrollX_timeout():
 	start_scroll()
 
 func start_scroll():
 	$TimerScrollX.wait_time = wait
-	scroll_target = $Holder.rect_global_position.x - window_x
+	scroll_target = holder.rect_global_position.x - window_x
 	scrolling = true
 	$TimerScrollX.paused = true
