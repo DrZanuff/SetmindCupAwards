@@ -22,6 +22,7 @@ margin_bottom = 430.051
 texture = SubResource( 1 )
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
+download_file = "res://"
 
 [node name="Label" type="Label" parent="."]
 margin_left = 12.0
