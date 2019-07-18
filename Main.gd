@@ -6,6 +6,7 @@ var window_x = 1280
 var scrolling = false
 var scroll_target = 0
 onready var wait = $TimerScrollX.wait_time
+onready var holder = $Holder
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
