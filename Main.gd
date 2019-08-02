@@ -12,7 +12,7 @@ onready var holder = $Holder as HBoxContainer
 func _ready():
 	$DebugCam.current = debug
 	if debug:
-		debug_populate(21)
+		debug_populate(19)
 	pass # Replace with function body.
 
 func _physics_process(delta):
@@ -51,14 +51,10 @@ func debug_move(delta):
 		var debug_speed = 800
 		if Input.is_action_pressed("debug_right"):
 			$DebugCam.global_position.x += delta * debug_speed
-#			$Holder.rect_global_position.x = clamp(
-#			$Holder.rect_global_position.x - debug_speed * delta, 
-#			-($Holder.rect_size.x-window_x) , 0)
+
 		if Input.is_action_pressed("debug_left"):
 			$DebugCam.global_position.x -= delta * debug_speed
-#			$Holder.rect_global_position.x = clamp(
-#			$Holder.rect_global_position.x + debug_speed * delta, 
-#			-($Holder.rect_size.x-window_x) , 0)
+
 
 func debug_populate(x):
 	if debug:
@@ -68,8 +64,9 @@ func debug_populate(x):
 		for i in range(x):
 			var new_obj = obj.instance()
 			holder.add_child(new_obj)
+			new_obj.update_data(get_node("data").array,i)
 #			new_obj.text = str("Object ", holder.get_child_count() )
-			new_obj.get_node("Body/Title").text = str("Object ", holder.get_child_count() )
+#			new_obj.get_node("Body/Title").text = str("Object ", holder.get_child_count() )
 
 
 func _on_TimerScrollX_timeout():
