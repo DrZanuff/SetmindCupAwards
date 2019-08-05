@@ -64,7 +64,7 @@ func debug_populate(x):
 		for i in range(x):
 			var new_obj = obj.instance()
 			holder.add_child(new_obj)
-			new_obj.update_data(get_node("data").array,i)
+			new_obj.update_data(get_node("data").array,i) ######################Colocar i aqui
 #			new_obj.text = str("Object ", holder.get_child_count() )
 #			new_obj.get_node("Body/Title").text = str("Object ", holder.get_child_count() )
 

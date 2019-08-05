@@ -3,7 +3,7 @@ extends Node
 var array = [["Melhor Jogo","Melhor jogo 2D","Melhor Gameplay","Melhor Composição Artística",
 "Melhor Sonografia","Melhor Level Design","Funcionalidade  Inovadora",
 "Melhor Organização","Melhor GDD","Maior Empenho","Melhor Trabalho em Equipe",
-"Melhor Novato","Melhor volta por  cima","Melhor história","Melhor abordagem do problema",
+"Melhor Novato","Melhor volta por cima","Melhor história","Melhor abordagem do problema",
 "Melhor jogo 3D","Melhor referência","Melhor troca de ferramenta","Melhor Humor"],
 
 ["Bruno Cesar -Zebes-","Felipe Caseli -Ultron-","Felipe Caseli -Ultron-",
